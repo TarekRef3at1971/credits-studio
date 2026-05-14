@@ -882,7 +882,7 @@ app.endUndoGroup();
         <div style={{ display: 'grid', gridTemplateColumns: '210px 1.4fr 0.84fr', gap: '2rem', alignItems: 'start' }}>
           
           {/* Left Sidebar (Sticky) */}
-          <div style={{ position: 'sticky', top: '2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', zIndex: 50, height: 'calc(100vh - 4rem)', overflowY: 'auto', paddingRight: '0.5rem' }}>
+          <div style={{ position: 'sticky', top: '2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', zIndex: 50, height: 'calc(100vh - 4rem)', overflowY: 'auto', overflowX: 'hidden', paddingRight: '0.5rem', minWidth: 0 }}>
             <WordImporter credits={credits} setCredits={setCredits} moduleType="END" />
             
             <button onClick={addRow} className="btn-primary" style={{ padding: '0.8rem', background: 'var(--accent-gold)', color: 'black', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -903,7 +903,7 @@ app.endUndoGroup();
           </div>
 
           {/* Editor Side (Middle) */}
-          <div style={{ display: 'flex', flexDirection: 'column' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
             <div style={{ 
               position: 'sticky',
               top: 0,
@@ -1025,7 +1025,7 @@ app.endUndoGroup();
           </div>
 
           {/* Preview Side */}
-          <div style={{ position: 'sticky', top: '2rem' }}>
+          <div style={{ position: 'sticky', top: '2rem', minWidth: 0 }}>
             <div className="glass" style={{ 
               height: '490px', 
               position: 'relative', 
