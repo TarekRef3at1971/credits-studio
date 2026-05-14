@@ -37,7 +37,7 @@ const Auth = () => {
 
         try {
             // Note: Replace with actual fetch once backend is confirmed running
-            const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+            const BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/$/, "");
             const response = await fetch(`${BASE_URL}${endpoint}`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },

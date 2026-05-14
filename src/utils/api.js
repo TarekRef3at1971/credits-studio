@@ -1,7 +1,7 @@
 // src/utils/api.js
 // Simple wrapper for the backend API (http://localhost:3001)
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+const BASE_URL = (import.meta.env.VITE_API_URL || "http://localhost:3001").replace(/\/$/, "");
 
 function getAuthHeaders() {
   const token = localStorage.getItem("token");
