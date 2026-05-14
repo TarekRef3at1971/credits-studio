@@ -4,7 +4,7 @@ import { createPortal } from 'react-dom';
 import { X, Save, FolderOpen, Trash2 } from 'lucide-react';
 import { login, register, getProjects, saveProject, deleteProject } from '../utils/api';
 
-export default function ProjectPanel({ credits, setCredits, moduleType }) {
+export default function ProjectPanel({ credits, setCredits, moduleType, onProjectSaved }) {
   const [showAuth, setShowAuth] = useState(false);
   const [isLogin, setIsLogin] = useState(true);
   const [email, setEmail] = useState('');
@@ -14,6 +14,7 @@ export default function ProjectPanel({ credits, setCredits, moduleType }) {
   const [showProjects, setShowProjects] = useState(false);
   const [projectName, setProjectName] = useState('');
   const [showSaveModal, setShowSaveModal] = useState(false);
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
 
   const token = localStorage.getItem('token');
@@ -57,8 +58,11 @@ export default function ProjectPanel({ credits, setCredits, moduleType }) {
       await saveProject(finalName, { credits });
       setShowSaveModal(false);
       setProjectName('');
-      alert("Project saved successfully!");
+      setShowSuccessModal(true);
       fetchProjects();
+      if (onProjectSaved) {
+        onProjectSaved();
+      }
     } catch (err) {
       console.error(err);
       alert("Failed to save project: " + err.message);
@@ -190,6 +194,24 @@ export default function ProjectPanel({ credits, setCredits, moduleType }) {
               style={{ width: '100%', padding: '0.8rem', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px', marginBottom: '1rem' }} 
             />
             <button onClick={handleConfirmSave} className="btn-primary" style={{ width: '100%', background: 'var(--accent-gold)', color: 'black', border: 'none', padding: '0.8rem' }}>SAVE TO CLOUD</button>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {showSuccessModal && createPortal(
+        <div className="modal-overlay" style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 999999
+        }}>
+          <div className="glass" style={{ padding: '2rem', borderRadius: '12px', width: '320px', position: 'relative', textAlign: 'center' }}>
+            <button onClick={() => setShowSuccessModal(false)} style={{ position: 'absolute', top: '10px', right: '10px', background: 'transparent', border: 'none', color: 'white', cursor: 'pointer' }}><X size={20} /></button>
+            <div style={{ color: '#4ade80', marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
+              <Save size={48} />
+            </div>
+            <h3 style={{ color: 'var(--accent-gold)', marginBottom: '0.5rem' }}>SUCCESS</h3>
+            <p style={{ color: 'var(--text-secondary)', marginBottom: '1.5rem', fontSize: '0.9rem' }}>Project saved successfully to the cloud.</p>
+            <button onClick={() => setShowSuccessModal(false)} className="btn-primary" style={{ width: '100%', background: 'var(--accent-gold)', color: 'black', border: 'none', padding: '0.8rem' }}>CONTINUE</button>
           </div>
         </div>,
         document.body

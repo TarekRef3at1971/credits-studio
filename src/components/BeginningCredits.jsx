@@ -259,8 +259,16 @@ const BeginningCredits = () => {
     }
   }, [location]);
   
+  const [isDirty, setIsDirty] = useState(false);
+  const isDirtyRef = useRef(isDirty);
+
+  useEffect(() => {
+    isDirtyRef.current = isDirty;
+  }, [isDirty]);
+  
   useEffect(() => {
     const handleBeforeUnload = (e) => {
+      if (!isDirtyRef.current) return;
       e.preventDefault();
       e.returnValue = 'WARNING: You have unsaved changes! Please click Cancel to stay on this page, and use the SAVE button to save your project, otherwise you will lose your work.';
       return e.returnValue;
@@ -270,12 +278,14 @@ const BeginningCredits = () => {
     // Prevent browser back button
     window.history.pushState(null, null, window.location.href);
     const handlePopState = (e) => {
-      const leave = window.confirm('WARNING: You have unsaved changes! Please click Cancel to stay on this page, and use the SAVE button to save your project, otherwise you will lose your work.');
-      if (!leave) {
-        window.history.pushState(null, null, window.location.href);
-      } else {
-        window.history.go(-1);
+      if (isDirtyRef.current) {
+        const leave = window.confirm('WARNING: You have unsaved changes! Please click Cancel to stay on this page, and use the SAVE button to save your project, otherwise you will lose your work.');
+        if (!leave) {
+          window.history.pushState(null, null, window.location.href);
+          return;
+        }
       }
+      window.history.go(-1);
     };
     window.addEventListener('popstate', handlePopState);
 
@@ -346,9 +356,11 @@ const BeginningCredits = () => {
     if (dir === 'up' && index > 0) {
       setCredits((prev) => arrayMove(prev, index, index - 1));
       setActivePlateIndex(index - 1);
+      setIsDirty(true);
     } else if (dir === 'down' && index < credits.length - 1) {
       setCredits((prev) => arrayMove(prev, index, index + 1));
       setActivePlateIndex(index + 1);
+      setIsDirty(true);
     }
   };
 
@@ -360,18 +372,20 @@ const BeginningCredits = () => {
         const newIndex = items.findIndex(i => i.id === over.id);
         return arrayMove(items, oldIndex, newIndex);
       });
+      setIsDirty(true);
     }
   };
 
   const addRow = () => {
       setCredits([...credits, { id: crypto.randomUUID(), role: '', names: [''], logo: '', overridePosition: 'NONE' }]);
       setActivePlateIndex(credits.length); // switch to newly created plate
+      setIsDirty(true);
   };
-  const updateRow = (id, field, value) => setCredits(credits.map(c => c.id === id ? { ...c, [field]: value } : c));
-  const removeRow = (id) => setCredits(credits.filter(c => c.id !== id));
-  const addName = (id) => setCredits(credits.map(c => c.id === id ? { ...c, names: [...c.names, ''] } : c));
-  const removeName = (id, idx) => setCredits(credits.map(c => c.id === id ? { ...c, names: c.names.filter((_, i) => i !== idx) } : c));
-  const updateName = (id, idx, value) => setCredits(credits.map(c => c.id === id ? { ...c, names: c.names.map((n, i) => i === idx ? value : n) } : c));
+  const updateRow = (id, field, value) => { setCredits(credits.map(c => c.id === id ? { ...c, [field]: value } : c)); setIsDirty(true); };
+  const removeRow = (id) => { setCredits(credits.filter(c => c.id !== id)); setIsDirty(true); };
+  const addName = (id) => { setCredits(credits.map(c => c.id === id ? { ...c, names: [...c.names, ''] } : c)); setIsDirty(true); };
+  const removeName = (id, idx) => { setCredits(credits.map(c => c.id === id ? { ...c, names: c.names.filter((_, i) => i !== idx) } : c)); setIsDirty(true); };
+  const updateName = (id, idx, value) => { setCredits(credits.map(c => c.id === id ? { ...c, names: c.names.map((n, i) => i === idx ? value : n) } : c)); setIsDirty(true); };
 
   const resetProject = () => {
     setCredits([{ id: crypto.randomUUID(), role: '', names: [''], logo: '', overridePosition: 'NONE' }]);
@@ -641,7 +655,7 @@ app.endUndoGroup();
           <button onClick={addRow} className="btn-primary" style={{ padding: '0.8rem', background: 'var(--accent-gold)', color: 'black', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><Plus size={18} style={{ marginRight: '8px' }} /> ADD NEW PLATE</button>
           <button onClick={() => setShowNewProjectModal(true)} className="btn-primary" style={{ padding: '0.8rem', background: 'transparent', border: '1px solid var(--accent-silver)', color: 'var(--accent-silver)', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><FilePlus size={18} style={{ marginRight: '8px' }} /> NEW PROJECT</button>
           <button onClick={handleExportClick} className="btn-primary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: '#31A8FF', border: 'none', color: 'white', padding: '0.8rem' }}><Download size={18} /> EXPORT TO ADOBE</button>
-          <ProjectPanel credits={credits} setCredits={setCredits} moduleType="BEGIN" />
+          <ProjectPanel credits={credits} setCredits={setCredits} moduleType="BEGIN" onProjectSaved={() => setIsDirty(false)} />
           <UploadedFilesList setCredits={setCredits} moduleType="BEGIN" />
         </div>
 

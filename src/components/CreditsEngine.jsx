@@ -354,8 +354,15 @@ const CreditsEngine = () => {
   const [exportFileName, setExportFileName] = useState('End_Credits');
   const [gapBetweenPlates, setGapBetweenPlates] = useState(300);
   const [gapAfterTitle, setGapAfterTitle] = useState(150);
+  const [gapAfterTitle, setGapAfterTitle] = useState(150);
   const [gapBetweenNames, setGapBetweenNames] = useState(100);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isDirty, setIsDirty] = useState(false);
+  const isDirtyRef = useRef(isDirty);
+
+  useEffect(() => {
+    isDirtyRef.current = isDirty;
+  }, [isDirty]);
 
   const handleExportClick = () => {
     const user = JSON.parse(localStorage.getItem('user') || '{}');
@@ -368,6 +375,7 @@ const CreditsEngine = () => {
 
   useEffect(() => {
     const handleBeforeUnload = (e) => {
+      if (!isDirtyRef.current) return;
       e.preventDefault();
       e.returnValue = 'WARNING: You have unsaved changes! Please click Cancel to stay on this page, and use the SAVE button to save your project, otherwise you will lose your work.';
       return e.returnValue;
@@ -377,12 +385,14 @@ const CreditsEngine = () => {
     // Prevent browser back button
     window.history.pushState(null, null, window.location.href);
     const handlePopState = (e) => {
-      const leave = window.confirm('WARNING: You have unsaved changes! Please click Cancel to stay on this page, and use the SAVE button to save your project, otherwise you will lose your work.');
-      if (!leave) {
-        window.history.pushState(null, null, window.location.href);
-      } else {
-        window.history.go(-1);
+      if (isDirtyRef.current) {
+        const leave = window.confirm('WARNING: You have unsaved changes! Please click Cancel to stay on this page, and use the SAVE button to save your project, otherwise you will lose your work.');
+        if (!leave) {
+          window.history.pushState(null, null, window.location.href);
+          return;
+        }
       }
+      window.history.go(-1);
     };
     window.addEventListener('popstate', handlePopState);
 
@@ -441,8 +451,10 @@ const CreditsEngine = () => {
   const movePlate = (index, dir) => {
     if (dir === 'up' && index > 0) {
       setCredits((prev) => arrayMove(prev, index, index - 1));
+      setIsDirty(true);
     } else if (dir === 'down' && index < credits.length - 1) {
       setCredits((prev) => arrayMove(prev, index, index + 1));
+      setIsDirty(true);
     }
   };
 
@@ -454,6 +466,7 @@ const CreditsEngine = () => {
         const newIndex = items.findIndex(i => i.id === over.id);
         return arrayMove(items, oldIndex, newIndex);
       });
+      setIsDirty(true);
     }
   };
 
@@ -467,6 +480,7 @@ const CreditsEngine = () => {
       fontSize: '20px', // Numerical default
       logo: ''
     }]);
+    setIsDirty(true);
   };
 
   const scrollToPlate = (id) => {
@@ -491,18 +505,22 @@ const CreditsEngine = () => {
 
   const removeRow = (id) => {
     setCredits(credits.filter(c => c.id !== id));
+    setIsDirty(true);
   };
 
   const updateRow = (id, field, value) => {
     setCredits(credits.map(c => c.id === id ? { ...c, [field]: value } : c));
+    setIsDirty(true);
   };
 
   const addName = (id) => {
     setCredits(credits.map(c => c.id === id ? { ...c, names: [...c.names, ''] } : c));
+    setIsDirty(true);
   };
 
   const removeName = (id, idx) => {
     setCredits(credits.map(c => c.id === id ? { ...c, names: c.names.filter((_, i) => i !== idx) } : c));
+    setIsDirty(true);
   };
 
   const updateName = (id, idx, value) => {
@@ -510,6 +528,7 @@ const CreditsEngine = () => {
       ...c, 
       names: c.names.map((n, i) => i === idx ? value : n) 
     } : c));
+    setIsDirty(true);
   };
 
   const generatePsdBuffer = async () => {
@@ -877,7 +896,7 @@ app.endUndoGroup();
               <Download size={18} /> EXPORT TO ADOBE
             </button>
 
-            <ProjectPanel credits={credits} setCredits={setCredits} moduleType="END" />
+            <ProjectPanel credits={credits} setCredits={setCredits} moduleType="END" onProjectSaved={() => setIsDirty(false)} />
             <UploadedFilesList setCredits={setCredits} moduleType="END" />
 
           </div>
@@ -916,14 +935,14 @@ app.endUndoGroup();
 
               {/* STYLING & SPACING SETTINGS */}
               <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <div className="glass" style={{ flex: 1, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'var(--accent-gold)', fontWeight: 'bold' }}>TITLE STYLING</span>
-                  <div style={{ display: 'flex', gap: '1.5rem' }}>
+                <div className="glass" style={{ flex: 0.6, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'var(--accent-gold)', fontWeight: 'bold', textAlign: 'center' }}>TITLE STYLING</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-start' }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
                       <input 
                         type="checkbox" 
                         checked={globalTitleBold} 
-                        onChange={(e) => setGlobalTitleBold(e.target.checked)} 
+                        onChange={(e) => { setGlobalTitleBold(e.target.checked); setIsDirty(true); }} 
                         style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
                       />
                       <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>BOLD</span>
@@ -932,7 +951,7 @@ app.endUndoGroup();
                       <input 
                         type="checkbox" 
                         checked={globalTitleItalic} 
-                        onChange={(e) => setGlobalTitleItalic(e.target.checked)} 
+                        onChange={(e) => { setGlobalTitleItalic(e.target.checked); setIsDirty(true); }} 
                         style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
                       />
                       <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>ITALIC</span>
@@ -940,14 +959,14 @@ app.endUndoGroup();
                   </div>
                 </div>
 
-                <div className="glass" style={{ flex: 1, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'white', fontWeight: 'bold' }}>NAME STYLING</span>
-                  <div style={{ display: 'flex', gap: '1.5rem' }}>
+                <div className="glass" style={{ flex: 0.6, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'white', fontWeight: 'bold', textAlign: 'center' }}>NAME STYLING</span>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-start' }}>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
                       <input 
                         type="checkbox" 
                         checked={globalNameBold} 
-                        onChange={(e) => setGlobalNameBold(e.target.checked)} 
+                        onChange={(e) => { setGlobalNameBold(e.target.checked); setIsDirty(true); }} 
                         style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
                       />
                       <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>BOLD</span>
@@ -956,7 +975,7 @@ app.endUndoGroup();
                       <input 
                         type="checkbox" 
                         checked={globalNameItalic} 
-                        onChange={(e) => setGlobalNameItalic(e.target.checked)} 
+                        onChange={(e) => { setGlobalNameItalic(e.target.checked); setIsDirty(true); }} 
                         style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
                       />
                       <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>ITALIC</span>
@@ -964,7 +983,7 @@ app.endUndoGroup();
                   </div>
                 </div>
 
-                <div className="glass" style={{ flex: 1.5, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
+                <div className="glass" style={{ flex: 2, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
                   <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: '#31A8FF', fontWeight: 'bold' }}>TITLES SPACING (in pixels)</span>
                   <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
