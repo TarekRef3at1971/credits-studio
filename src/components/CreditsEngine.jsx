@@ -361,6 +361,7 @@ const CreditsEngine = () => {
 
   useEffect(() => {
     isDirtyRef.current = isDirty;
+    window.isProjectDirty = isDirty;
   }, [isDirty]);
 
   const handleExportClick = () => {
@@ -373,6 +374,7 @@ const CreditsEngine = () => {
   };
 
   useEffect(() => {
+    window.isProjectDirty = false;
     const handleBeforeUnload = (e) => {
       if (!isDirtyRef.current) return;
       e.preventDefault();

@@ -264,9 +264,11 @@ const BeginningCredits = () => {
 
   useEffect(() => {
     isDirtyRef.current = isDirty;
+    window.isProjectDirty = isDirty;
   }, [isDirty]);
   
   useEffect(() => {
+    window.isProjectDirty = false;
     const handleBeforeUnload = (e) => {
       if (!isDirtyRef.current) return;
       e.preventDefault();

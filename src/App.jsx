@@ -61,11 +61,20 @@ function SafeNavigationLink({ to, children }) {
     navigate(to);
   };
 
+  const handleClick = (e) => {
+    e.preventDefault();
+    if (window.isProjectDirty) {
+      React_useState(true);
+    } else {
+      navigate(to);
+    }
+  };
+
   return (
     <>
       <a 
         href="#" 
-        onClick={(e) => { e.preventDefault(); React_useState(true); }}
+        onClick={handleClick}
         style={{ color: 'var(--accent-silver)', textDecoration: 'none', letterSpacing: '0.2em', fontSize: '0.8rem', textTransform: 'uppercase' }}
       >
         {children}
