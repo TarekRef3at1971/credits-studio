@@ -649,10 +649,10 @@ app.endUndoGroup();
         <h2 style={{ fontSize: '2.5rem', margin: 0 }}>Beginning Credits <span className="cinematic-text">Designer</span></h2>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '280px 1.8fr 1.2fr', gap: '2.5rem', alignItems: 'start', height: 'calc(100vh - 5rem)', padding: '0 2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '210px 2.4fr 1.2fr', gap: '2rem', alignItems: 'start', height: 'calc(100vh - 5rem)', padding: '0 2rem' }}>
         
         {/* Left Sidebar */}
-        <div className="custom-scrollbar" style={{ height: '100%', overflowY: 'auto', paddingRight: '10px', display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+        <div className="custom-scrollbar" style={{ height: '100%', overflowY: 'auto', paddingRight: '10px', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
           <WordImporter credits={credits} setCredits={setCredits} moduleType="BEGIN" />
           <button onClick={addRow} className="btn-primary" style={{ padding: '0.8rem', background: 'var(--accent-gold)', color: 'black', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><Plus size={18} style={{ marginRight: '8px' }} /> ADD NEW PLATE</button>
           <button onClick={() => setShowNewProjectModal(true)} className="btn-primary" style={{ padding: '0.8rem', background: 'transparent', border: '1px solid var(--accent-silver)', color: 'var(--accent-silver)', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><FilePlus size={18} style={{ marginRight: '8px' }} /> NEW PROJECT</button>

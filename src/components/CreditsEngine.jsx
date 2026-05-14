@@ -61,9 +61,9 @@ const SortableCreditRow = ({
   const style = {
     transform: CSS.Transform.toString(transform),
     transition,
-    marginBottom: '2rem',
+    marginBottom: '1.6rem',
     background: 'rgba(255,255,255,0.03)',
-    borderRadius: '12px',
+    borderRadius: '10px',
     border: '1px solid var(--glass-border)',
     position: 'relative'
   };
@@ -124,14 +124,14 @@ const SortableCreditRow = ({
         </button>
       </div>
 
-      <div style={{ padding: '2rem', display: 'grid', gridTemplateColumns: '1fr 150px', gap: '2rem' }}>
+      <div style={{ padding: '1.6rem', display: 'grid', gridTemplateColumns: '1fr 120px', gap: '1.6rem' }}>
         
         {/* Left Content: Vertical Stack */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
           
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
             <div style={{ 
-              fontSize: '2.5rem', 
+              fontSize: '2rem', 
               fontWeight: '900', 
               color: 'var(--accent-gold)', 
               fontFamily: 'var(--font-heading)',
@@ -265,8 +265,8 @@ const SortableCreditRow = ({
             onMouseLeave={() => setIsLogoHovered(false)}
             onClick={() => fileInputRef.current.click()}
             style={{ 
-              width: '150px', 
-              height: '150px', 
+              width: '120px', 
+              height: '120px', 
               background: credit.logo ? `url("${credit.logo}") center/contain no-repeat` : 'rgba(255,255,255,0.02)',
               border: '2px dashed var(--glass-border)',
               borderRadius: '8px',
@@ -879,10 +879,10 @@ app.endUndoGroup();
           <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>End Credits <span className="cinematic-text">Writer</span></h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '280px 0.8fr 1.2fr', gap: '3rem', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '210px 1.4fr 0.84fr', gap: '2rem', alignItems: 'start' }}>
           
           {/* Left Sidebar (Sticky) */}
-          <div style={{ position: 'sticky', top: '2rem', display: 'flex', flexDirection: 'column', gap: '0.8rem', zIndex: 50, height: 'calc(100vh - 4rem)', overflowY: 'auto', paddingRight: '0.5rem' }}>
+          <div style={{ position: 'sticky', top: '2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', zIndex: 50, height: 'calc(100vh - 4rem)', overflowY: 'auto', paddingRight: '0.5rem' }}>
             <WordImporter credits={credits} setCredits={setCredits} moduleType="END" />
             
             <button onClick={addRow} className="btn-primary" style={{ padding: '0.8rem', background: 'var(--accent-gold)', color: 'black', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -914,90 +914,72 @@ app.endUndoGroup();
               paddingTop: '2rem',
               marginTop: '-2rem'
             }}>
-              <div style={{ position: 'relative' }}>
-                <Search size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-                <input 
-                  type="text" 
-                  placeholder="Search plates for text..." 
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  style={{ 
-                    width: '100%', 
-                    padding: '1rem 1rem 1rem 3rem', 
-                    borderRadius: '8px', 
-                    border: '1px solid var(--glass-border)', 
-                    background: 'rgba(255,255,255,0.05)',
-                    color: 'white',
-                    fontSize: '1rem',
-                    outline: 'none'
-                  }}
-                />
-              </div>
-
-              {/* STYLING & SPACING SETTINGS */}
-              <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                <div className="glass" style={{ flex: 0.6, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'var(--accent-gold)', fontWeight: 'bold', textAlign: 'center' }}>TITLE STYLING</span>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-start' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                      <input 
-                        type="checkbox" 
-                        checked={globalTitleBold} 
-                        onChange={(e) => { setGlobalTitleBold(e.target.checked); setIsDirty(true); }} 
-                        style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
-                      />
-                      <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>BOLD</span>
-                    </label>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                      <input 
-                        type="checkbox" 
-                        checked={globalTitleItalic} 
-                        onChange={(e) => { setGlobalTitleItalic(e.target.checked); setIsDirty(true); }} 
-                        style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
-                      />
-                      <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>ITALIC</span>
-                    </label>
-                  </div>
+              {/* Search bar + controls side by side */}
+              <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'stretch' }}>
+                {/* Search */}
+                <div style={{ position: 'relative', flex: 1 }}>
+                  <Search size={16} style={{ position: 'absolute', left: '0.8rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
+                  <input 
+                    type="text" 
+                    placeholder="Search plates..." 
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{ 
+                      width: '100%', 
+                      height: '100%',
+                      padding: '0.7rem 0.8rem 0.7rem 2.4rem', 
+                      borderRadius: '8px', 
+                      border: '1px solid var(--glass-border)', 
+                      background: 'rgba(255,255,255,0.05)',
+                      color: 'white',
+                      fontSize: '0.9rem',
+                      outline: 'none',
+                      boxSizing: 'border-box'
+                    }}
+                  />
                 </div>
 
-                <div className="glass" style={{ flex: 0.6, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: 'white', fontWeight: 'bold', textAlign: 'center' }}>NAME STYLING</span>
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', alignItems: 'flex-start' }}>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                      <input 
-                        type="checkbox" 
-                        checked={globalNameBold} 
-                        onChange={(e) => { setGlobalNameBold(e.target.checked); setIsDirty(true); }} 
-                        style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
-                      />
-                      <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>BOLD</span>
-                    </label>
-                    <label style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}>
-                      <input 
-                        type="checkbox" 
-                        checked={globalNameItalic} 
-                        onChange={(e) => { setGlobalNameItalic(e.target.checked); setIsDirty(true); }} 
-                        style={{ accentColor: 'var(--accent-gold)', width: '18px', height: '18px' }}
-                      />
-                      <span style={{ fontSize: '0.8rem', letterSpacing: '0.1em' }}>ITALIC</span>
-                    </label>
-                  </div>
+                {/* TITLE STYLING */}
+                <div className="glass" style={{ padding: '0.4rem 0.6rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', minWidth: '80px' }}>
+                  <span style={{ fontSize: '0.6rem', letterSpacing: '0.15em', color: 'var(--accent-gold)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>TITLE</span>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                    <input type="checkbox" checked={globalTitleBold} onChange={(e) => { setGlobalTitleBold(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
+                    <span style={{ fontSize: '0.7rem' }}>Bold</span>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                    <input type="checkbox" checked={globalTitleItalic} onChange={(e) => { setGlobalTitleItalic(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
+                    <span style={{ fontSize: '0.7rem' }}>Italic</span>
+                  </label>
                 </div>
 
-                <div className="glass" style={{ flex: 2, padding: '0.6rem', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center' }}>
-                  <span style={{ fontSize: '0.7rem', letterSpacing: '0.2em', color: '#31A8FF', fontWeight: 'bold' }}>TITLES SPACING (in pixels)</span>
-                  <div style={{ display: 'flex', gap: '0.5rem', width: '100%' }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                      <span style={{ fontSize: '0.6rem', color: 'var(--text-secondary)' }}>PLATE</span>
-                      <input type="number" value={gapBetweenPlates} onChange={e => setGapBetweenPlates(Number(e.target.value) || 0)} style={{ width: '100%', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', textAlign: 'center', padding: '0.2rem', fontSize: '0.8rem' }} />
+                {/* NAME STYLING */}
+                <div className="glass" style={{ padding: '0.4rem 0.6rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', minWidth: '80px' }}>
+                  <span style={{ fontSize: '0.6rem', letterSpacing: '0.15em', color: 'white', fontWeight: 'bold', whiteSpace: 'nowrap' }}>NAME</span>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                    <input type="checkbox" checked={globalNameBold} onChange={(e) => { setGlobalNameBold(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
+                    <span style={{ fontSize: '0.7rem' }}>Bold</span>
+                  </label>
+                  <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+                    <input type="checkbox" checked={globalNameItalic} onChange={(e) => { setGlobalNameItalic(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
+                    <span style={{ fontSize: '0.7rem' }}>Italic</span>
+                  </label>
+                </div>
+
+                {/* SPACING */}
+                <div className="glass" style={{ padding: '0.4rem 0.6rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center' }}>
+                  <span style={{ fontSize: '0.6rem', letterSpacing: '0.12em', color: '#31A8FF', fontWeight: 'bold', whiteSpace: 'nowrap' }}>SPACING (px)</span>
+                  <div style={{ display: 'flex', gap: '0.4rem' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.55rem', color: 'var(--text-secondary)' }}>PLATE</span>
+                      <input type="number" value={gapBetweenPlates} onChange={e => setGapBetweenPlates(Number(e.target.value) || 0)} style={{ width: '52px', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', textAlign: 'center', padding: '0.15rem', fontSize: '0.75rem' }} />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                      <span style={{ fontSize: '0.6rem', color: 'var(--text-secondary)' }}>TITLE</span>
-                      <input type="number" value={gapAfterTitle} onChange={e => setGapAfterTitle(Number(e.target.value) || 0)} style={{ width: '100%', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', textAlign: 'center', padding: '0.2rem', fontSize: '0.8rem' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.55rem', color: 'var(--text-secondary)' }}>TITLE</span>
+                      <input type="number" value={gapAfterTitle} onChange={e => setGapAfterTitle(Number(e.target.value) || 0)} style={{ width: '52px', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', textAlign: 'center', padding: '0.15rem', fontSize: '0.75rem' }} />
                     </div>
-                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', flex: 1 }}>
-                      <span style={{ fontSize: '0.6rem', color: 'var(--text-secondary)' }}>NAME</span>
-                      <input type="number" value={gapBetweenNames} onChange={e => setGapBetweenNames(Number(e.target.value) || 0)} style={{ width: '100%', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', textAlign: 'center', padding: '0.2rem', fontSize: '0.8rem' }} />
+                    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                      <span style={{ fontSize: '0.55rem', color: 'var(--text-secondary)' }}>NAME</span>
+                      <input type="number" value={gapBetweenNames} onChange={e => setGapBetweenNames(Number(e.target.value) || 0)} style={{ width: '52px', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', textAlign: 'center', padding: '0.15rem', fontSize: '0.75rem' }} />
                     </div>
                   </div>
                 </div>
@@ -1045,7 +1027,7 @@ app.endUndoGroup();
           {/* Preview Side */}
           <div style={{ position: 'sticky', top: '2rem' }}>
             <div className="glass" style={{ 
-              height: '700px', 
+              height: '490px', 
               position: 'relative', 
               overflowY: isPlaying ? 'hidden' : 'auto',
               overflowX: 'hidden',
