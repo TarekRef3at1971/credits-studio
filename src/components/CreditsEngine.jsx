@@ -857,13 +857,13 @@ app.endUndoGroup();
 
 
   return (
-    <section id="engine" style={{ background: 'var(--bg-primary)', minHeight: '100vh', padding: '2rem' }}>
+    <section id="engine" style={{ background: 'var(--bg-primary)', minHeight: '100vh', padding: '2rem 2rem 0 2rem' }}>
       <div>
         <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
           <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>End Credits <span className="cinematic-text">Writer</span></h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '240px 1.26fr 0.84fr', gap: '2rem', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '320px 1.0fr 0.84fr', gap: '2rem', alignItems: 'start' }}>
           
           {/* Left Sidebar (Sticky) */}
           <div style={{ position: 'sticky', top: '2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', zIndex: 50, height: 'calc(100vh - 4rem)', overflowY: 'auto', overflowX: 'hidden', paddingRight: '0.5rem', minWidth: 0 }}>
@@ -887,14 +887,14 @@ app.endUndoGroup();
           </div>
 
           {/* Editor Side (Middle) */}
-          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0 }}>
             <div style={{ 
               position: 'sticky',
               top: '2rem',
               zIndex: 100,
-              marginBottom: '1.5rem',
+              marginBottom: '1rem',
               background: 'var(--bg-primary)',
-              paddingBottom: '1rem',
+              paddingBottom: '0.75rem',
             }}>
               {/* Search bar + controls side by side */}
               <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'stretch' }}>
