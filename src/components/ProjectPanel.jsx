@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { X, Save, FolderOpen, Trash2 } from 'lucide-react';
-import { login, register, getProjects, saveProject, deleteProject } from '../utils/api';
+import { login, register, getProjects, saveProject, updateProject, deleteProject } from '../utils/api';
 
 export default function ProjectPanel({ credits, setCredits, moduleType, onProjectSaved }) {
   const [showAuth, setShowAuth] = useState(false);
@@ -16,6 +16,7 @@ export default function ProjectPanel({ credits, setCredits, moduleType, onProjec
   const [showSaveModal, setShowSaveModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [deleteCandidate, setDeleteCandidate] = useState(null);
+  const [overwriteCandidate, setOverwriteCandidate] = useState(null);
 
   const token = localStorage.getItem('token');
 
@@ -48,9 +49,9 @@ export default function ProjectPanel({ credits, setCredits, moduleType, onProjec
     const finalName = `${prefix}${projectName}`;
 
     // Check if name already exists
-    const exists = projects.some(p => p.name === finalName);
+    const exists = projects.find(p => p.name === finalName);
     if (exists) {
-      alert("A project with this name already exists. Please choose a different name to avoid overwriting.");
+      setOverwriteCandidate(exists);
       return;
     }
 
@@ -66,6 +67,24 @@ export default function ProjectPanel({ credits, setCredits, moduleType, onProjec
     } catch (err) {
       console.error(err);
       alert("Failed to save project: " + err.message);
+    }
+  };
+
+  const confirmOverwrite = async () => {
+    if (!overwriteCandidate) return;
+    try {
+      await updateProject(overwriteCandidate.id, overwriteCandidate.name, { credits });
+      setOverwriteCandidate(null);
+      setShowSaveModal(false);
+      setProjectName('');
+      setShowSuccessModal(true);
+      fetchProjects();
+      if (onProjectSaved) {
+        onProjectSaved();
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Failed to overwrite project: " + err.message);
     }
   };
 
@@ -230,6 +249,25 @@ export default function ProjectPanel({ credits, setCredits, moduleType, onProjec
             <div style={{ display: 'flex', gap: '1rem' }}>
               <button onClick={() => setDeleteCandidate(null)} style={{ flex: 1, padding: '1rem', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>CANCEL</button>
               <button onClick={confirmDelete} style={{ flex: 1, padding: '1rem', background: '#ff4444', border: 'none', color: 'white', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', textTransform: 'uppercase' }}>DELETE IT</button>
+            </div>
+          </div>
+        </div>,
+        document.body
+      )}
+
+      {overwriteCandidate && createPortal(
+        <div className="modal-overlay" style={{
+          position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.9)',
+          display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 999999
+        }}>
+          <div style={{ background: '#1a1000', border: '2px solid var(--accent-gold)', padding: '3rem 2rem', borderRadius: '12px', width: '400px', textAlign: 'center', boxShadow: '0 0 30px rgba(212,175,55,0.2)' }}>
+            <h3 style={{ color: 'var(--accent-gold)', fontSize: '1.5rem', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.1em' }}>OVERWRITE PROJECT?</h3>
+            <p style={{ color: 'white', marginBottom: '2rem', fontSize: '1rem', lineHeight: '1.5' }}>
+              A project named <strong>{getDisplayName(overwriteCandidate.name)}</strong> already exists. Do you want to overwrite it with your current work?
+            </p>
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              <button onClick={() => setOverwriteCandidate(null)} style={{ flex: 1, padding: '1rem', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold' }}>CANCEL</button>
+              <button onClick={confirmOverwrite} style={{ flex: 1, padding: '1rem', background: 'var(--accent-gold)', border: 'none', color: 'black', borderRadius: '4px', cursor: 'pointer', fontWeight: 'bold', textTransform: 'uppercase' }}>OVERWRITE</button>
             </div>
           </div>
         </div>,

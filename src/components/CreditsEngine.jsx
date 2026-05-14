@@ -354,7 +354,6 @@ const CreditsEngine = () => {
   const [exportFileName, setExportFileName] = useState('End_Credits');
   const [gapBetweenPlates, setGapBetweenPlates] = useState(300);
   const [gapAfterTitle, setGapAfterTitle] = useState(150);
-  const [gapAfterTitle, setGapAfterTitle] = useState(150);
   const [gapBetweenNames, setGapBetweenNames] = useState(100);
   const [searchQuery, setSearchQuery] = useState("");
   const [isDirty, setIsDirty] = useState(false);
