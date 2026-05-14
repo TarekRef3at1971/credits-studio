@@ -194,43 +194,29 @@ const SortableCreditRow = ({
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           <label style={{ fontSize: '0.7rem', letterSpacing: '0.15em', color: 'var(--text-secondary)' }}>NAME(S)</label>
           {credit.names.map((name, idx) => (
-            <div key={idx} style={{ display: 'flex', gap: '0.5rem' }}>
-              <input 
-                value={name}
-                onChange={(e) => onUpdateName(credit.id, idx, e.target.value)}
-                placeholder="NAME"
-                style={{ flex: 1, background: 'rgba(255,255,255,0.02)', border: '1px solid var(--glass-border)', padding: '0.8rem', color: 'white', fontFamily: 'var(--font-body)', fontSize: '24px', outline: 'none' }}
-              />
-              <button onClick={() => onRemoveName(credit.id, idx)} style={{ background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer' }}>
-                <Trash2 size={16} />
-              </button>
+            <div key={idx}>
+              <input value={name} onChange={(e) => onUpdateName(credit.id, idx, e.target.value)} placeholder="NAME" style={{ width: '100%', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--glass-border)', padding: '0.8rem', color: 'white', fontFamily: 'var(--font-body)', fontSize: '18px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
           ))}
-          <button onClick={() => onAddName(credit.id)} style={{ alignSelf: 'flex-start', background: 'transparent', border: '1px dashed var(--accent-gold)', color: 'var(--accent-gold)', padding: '0.5rem 1rem', fontSize: '0.8rem', cursor: 'pointer' }}>
-            + ADD NAME
-          </button>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+            <button onClick={() => onAddName(credit.id)} style={{ background: 'transparent', border: '1px dashed var(--accent-gold)', color: 'var(--accent-gold)', padding: '0.5rem 1rem', fontSize: '0.8rem', cursor: 'pointer' }}>+ ADD NAME</button>
+            <button onClick={() => onRemove(credit.id)} style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>DELETE PLATE</button>
+          </div>
         </div>
 
-        {/* Position Override */}
         <div style={{ display: 'flex', gap: '5px', marginTop: '0.5rem', alignItems: 'center', flexWrap: 'wrap' }}>
           <span style={{ fontSize: '0.7rem', color: 'var(--text-secondary)', marginRight: '5px' }}>POSITION OVERRIDE:</span>
           <button onClick={() => onUpdate(credit.id, 'overridePosition', 'NONE')} style={{ padding: '4px 8px', background: (!credit.overridePosition || credit.overridePosition === 'NONE') ? 'var(--accent-gold)' : 'transparent', color: (!credit.overridePosition || credit.overridePosition === 'NONE') ? 'black' : 'gray', border: '1px solid gray', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}>AUTO</button>
           {[1, 2, 3, 4].map(q => (
-             <button key={q} onClick={() => onUpdate(credit.id, 'overridePosition', q)} style={{ padding: '4px 8px', background: credit.overridePosition === q ? 'var(--accent-gold)' : 'transparent', color: credit.overridePosition === q ? 'black' : 'gray', border: '1px solid gray', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}>{q}</button>
+            <button key={q} onClick={() => onUpdate(credit.id, 'overridePosition', q)} style={{ padding: '4px 8px', background: credit.overridePosition === q ? 'var(--accent-gold)' : 'transparent', color: credit.overridePosition === q ? 'black' : 'gray', border: '1px solid gray', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}>{q}</button>
           ))}
           <button onClick={() => onUpdate(credit.id, 'overridePosition', 'CENTER')} style={{ padding: '4px 8px', background: credit.overridePosition === 'CENTER' ? 'var(--accent-gold)' : 'transparent', color: credit.overridePosition === 'CENTER' ? 'black' : 'gray', border: '1px solid gray', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}>C</button>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', alignItems: 'center' }}>
           <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept="image/*" />
-          <button onClick={() => fileInputRef.current.click()} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem' }}>
-             <ImageIcon size={16} /> {credit.logo ? 'CHANGE LOGO' : 'ADD LOGO'}
-          </button>
+          <button onClick={() => fileInputRef.current.click()} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem' }}><ImageIcon size={16} /> {credit.logo ? 'CHANGE LOGO' : 'ADD LOGO'}</button>
           {credit.logo && <button onClick={handleRemoveLogo} style={{ background: 'transparent', border: '1px solid #ff4444', color: '#ff4444', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}>REMOVE LOGO</button>}
-
-          <button onClick={() => onRemove(credit.id)} style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer' }}>
-            DELETE PLATE
-          </button>
         </div>
       </div>
     </div>
@@ -625,7 +611,7 @@ app.endUndoGroup();
         <button 
             onClick={() => setAppearanceDirection(type)} 
             style={{ 
-                width: '60px', height: '60px', 
+                width: '46px', height: '46px', 
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 background: isActive ? 'rgba(212,175,55,0.15)' : 'rgba(255,255,255,0.02)', 
                 border: `1px solid ${isActive ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)'}`, 
@@ -649,7 +635,7 @@ app.endUndoGroup();
         <h2 style={{ fontSize: '2.5rem', margin: 0 }}>Beginning Credits <span className="cinematic-text">Designer</span></h2>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: '210px 2.4fr 1.2fr', gap: '2rem', alignItems: 'start', height: 'calc(100vh - 5rem)', padding: '0 2rem' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: '320px 2.0fr 1.2fr', gap: '2rem', alignItems: 'start', height: 'calc(100vh - 5rem)', padding: '0 2rem' }}>
         
         {/* Left Sidebar */}
         <div className="custom-scrollbar" style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden', paddingRight: '10px', display: 'flex', flexDirection: 'column', gap: '0.6rem', minWidth: 0 }}>
@@ -666,18 +652,18 @@ app.endUndoGroup();
             
           <div className="glass" style={{ padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', alignItems: 'flex-start', justifyContent: 'center' }}>
-                {/* Left-side Vertical Order Panel */}
-                <div style={{ display: 'flex', flexDirection: 'row', gap: '8px', alignItems: 'flex-start' }}>
-                    <p style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', textAlign: 'center', color: 'var(--accent-gold)', fontSize: '0.7rem', letterSpacing: '0.1em', margin: 0, fontWeight: 'bold' }}>APPEARANCE ORDER</p>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                        {renderButton('FIX', <span style={{ fontSize: '1rem', fontWeight: 'bold' }}>FIX</span>)}
+                {/* Left-side Order Panel */}
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
+                    <p style={{ textAlign: 'center', color: 'var(--accent-gold)', fontSize: '0.6rem', letterSpacing: '0.15em', margin: 0, fontWeight: 'bold', whiteSpace: 'nowrap' }}>APPEARANCE ORDER</p>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        {renderButton('FIX', <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>FIX</span>)}
                         {renderButton('CENTER', <CenterSVG />)}
                         {renderButton('ALT_V', <AltVSVG />)}
                         {renderButton('ALT_H', <AltHSVG />)}
                     </div>
                 </div>
 
-                <div style={{ flex: 1, minWidth: '400px', display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                     {/* Horizontal row for Canvas and Color Panel */}
                     <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
                         <div style={{ 
@@ -796,8 +782,8 @@ app.endUndoGroup();
                     {/* Manual Slider for Plate Preview */}
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginTop: '1.5rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--accent-gold)', fontSize: '0.8rem', letterSpacing: '0.1em' }}>
-                            <span style={{ fontWeight: 'bold' }}>PREVIEWING PLATE: <strong style={{ color: 'white' }}>{(activePlateIndex || 0) + 1} OF {credits?.length || 1}</strong></span>
-                            <span style={{ color: 'var(--text-secondary)' }}>SLIDE TO PREVIEW</span>
+                            <span style={{ fontWeight: 'bold' }}>SLIDE TO PREVIEW</span>
+                            <strong style={{ color: 'white' }}>{(activePlateIndex || 0) + 1} OF {credits?.length || 1}</strong>
                         </div>
                         <input 
                             type="range" 
@@ -810,78 +796,54 @@ app.endUndoGroup();
                     </div>
                 </div>
             </div>
+            
+            {/* Animation + Color Controls under the canvas */}
+            <div style={{ display: 'flex', gap: '0.8rem', marginTop: '1rem' }}>
+              {/* Animation */}
+              <div className="glass" style={{ flex: 2, padding: '0.5rem 0.8rem', borderRadius: '8px', display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+                <h3 style={{ color: 'var(--accent-gold)', textAlign: 'center', letterSpacing: '0.1em', margin: 0, fontSize: '0.7rem' }}>ANIMATION</h3>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '0.4rem 0.6rem', borderRadius: '6px', flex: 1 }}>
+                    <span style={{ color: 'var(--accent-gold)', fontSize: '0.75rem', fontWeight: 'bold', width: '24px' }}>IN</span>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'white', cursor: 'pointer' }}><input type="checkbox" checked={fadeIn} onChange={(e) => setFadeIn(e.target.checked)} /> Fade</label>
+                    <input type="number" min="0" step="1" disabled={!fadeIn} value={fadeInDuration} onChange={(e) => setFadeInDuration(Number(e.target.value))} style={{ width: '36px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: fadeIn ? 'white' : 'gray', padding: '0.15rem', borderRadius: '4px', fontSize: '0.7rem', textAlign: 'center' }} />
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'white', cursor: 'pointer' }}><input type="checkbox" checked={blurIn} onChange={(e) => setBlurIn(e.target.checked)} /> Blur</label>
+                    <input type="number" min="0" step="1" disabled={!blurIn} value={blurInDuration} onChange={(e) => setBlurInDuration(Number(e.target.value))} style={{ width: '36px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: blurIn ? 'white' : 'gray', padding: '0.15rem', borderRadius: '4px', fontSize: '0.7rem', textAlign: 'center' }} />
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '0.4rem 0.6rem', borderRadius: '6px', flex: 1 }}>
+                    <span style={{ color: 'var(--accent-gold)', fontSize: '0.75rem', fontWeight: 'bold', width: '24px' }}>OUT</span>
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'white', cursor: 'pointer' }}><input type="checkbox" checked={fadeOut} onChange={(e) => setFadeOut(e.target.checked)} /> Fade</label>
+                    <input type="number" min="0" step="1" disabled={!fadeOut} value={fadeOutDuration} onChange={(e) => setFadeOutDuration(Number(e.target.value))} style={{ width: '36px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: fadeOut ? 'white' : 'gray', padding: '0.15rem', borderRadius: '4px', fontSize: '0.7rem', textAlign: 'center' }} />
+                    <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'white', cursor: 'pointer' }}><input type="checkbox" checked={blurOut} onChange={(e) => setBlurOut(e.target.checked)} /> Blur</label>
+                    <input type="number" min="0" step="1" disabled={!blurOut} value={blurOutDuration} onChange={(e) => setBlurOutDuration(Number(e.target.value))} style={{ width: '36px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: blurOut ? 'white' : 'gray', padding: '0.15rem', borderRadius: '4px', fontSize: '0.7rem', textAlign: 'center' }} />
+                  </div>
+                </div>
+              </div>
+              {/* Colors */}
+              <div className="glass" style={{ flex: 1, padding: '0.5rem 0.8rem', borderRadius: '8px', display: 'flex', flexDirection: 'column', gap: '0.4rem', justifyContent: 'center' }}>
+                <h3 style={{ color: 'var(--accent-gold)', textAlign: 'center', letterSpacing: '0.1em', margin: 0, fontSize: '0.7rem' }}>COLORS</h3>
+                <div style={{ display: 'flex', justifyContent: 'space-around', alignItems: 'center' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '0.6rem', color: 'var(--accent-gold)', letterSpacing: '0.1em', fontWeight: 'bold' }}>TITLE</span>
+                    <input type="color" value={titleColor} onChange={(e) => setTitleColor(e.target.value)} style={{ background: 'transparent', border: 'none', width: '24px', height: '24px', cursor: 'pointer' }} />
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                    <span style={{ fontSize: '0.6rem', color: 'var(--accent-gold)', letterSpacing: '0.1em', fontWeight: 'bold' }}>NAME</span>
+                    <input type="color" value={nameColor} onChange={(e) => setNameColor(e.target.value)} style={{ background: 'transparent', border: 'none', width: '24px', height: '24px', cursor: 'pointer' }} />
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
 
         </div>
 
         {/* Right Section: Plates List */}
         <div className="custom-scrollbar" style={{ height: '100%', overflowY: 'auto', paddingRight: '10px', display: 'flex', flexDirection: 'column' }}>
-          <div style={{ position: 'sticky', top: 0, zIndex: 100, background: 'var(--bg-primary)', paddingBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <div style={{ position: 'sticky', top: 0, zIndex: 100, background: 'var(--bg-primary)', paddingBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             <div style={{ position: 'relative' }}>
               <Search size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-              <input type="text" placeholder="Search plates for text..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ width: '100%', padding: '1rem 1rem 1rem 3rem', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '1rem', outline: 'none' }} />
-            </div>
-
-            {/* Animation Block */}
-            <div className="glass" style={{ padding: '1rem', borderRadius: '8px' }}>
-                <h3 style={{ color: 'var(--accent-gold)', textAlign: 'center', letterSpacing: '0.1em', marginBottom: '1rem', fontSize: '0.9rem' }}>ANIMATION</h3>
-                
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                    {/* In Row */}
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '0.8rem', borderRadius: '8px' }}>
-                        <span style={{ color: 'var(--accent-gold)', fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '0.1em', width: '50px' }}>IN</span>
-                        <div style={{ display: 'flex', flex: 1, gap: '1rem', justifyContent: 'flex-start', flexWrap: 'wrap', alignItems: 'center' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.8rem', color: 'white', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={fadeIn} onChange={(e) => setFadeIn(e.target.checked)} /> Fade
-                                </label>
-                                <input type="number" min="0" step="1" disabled={!fadeIn} value={fadeInDuration} onChange={(e) => setFadeInDuration(Number(e.target.value))} style={{ width: '40px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: fadeIn ? 'white' : 'gray', padding: '0.2rem', borderRadius: '4px', fontSize: '0.75rem', textAlign: 'center' }} title="Duration (frames)" />
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.8rem', color: 'white', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={blurIn} onChange={(e) => setBlurIn(e.target.checked)} /> Blur
-                                </label>
-                                <input type="number" min="0" step="1" disabled={!blurIn} value={blurInDuration} onChange={(e) => setBlurInDuration(Number(e.target.value))} style={{ width: '40px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: blurIn ? 'white' : 'gray', padding: '0.2rem', borderRadius: '4px', fontSize: '0.75rem', textAlign: 'center' }} title="Duration (frames)" />
-                            </div>
-                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginLeft: 'auto' }}>(in frames)</span>
-                        </div>
-                    </div>
-
-                    {/* Out Row */}
-                    <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '0.8rem', borderRadius: '8px' }}>
-                        <span style={{ color: 'var(--accent-gold)', fontSize: '1.2rem', fontWeight: 'bold', letterSpacing: '0.1em', width: '50px' }}>OUT</span>
-                        <div style={{ display: 'flex', flex: 1, gap: '1rem', justifyContent: 'flex-start', flexWrap: 'wrap', alignItems: 'center' }}>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.8rem', color: 'white', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={fadeOut} onChange={(e) => setFadeOut(e.target.checked)} /> Fade
-                                </label>
-                                <input type="number" min="0" step="1" disabled={!fadeOut} value={fadeOutDuration} onChange={(e) => setFadeOutDuration(Number(e.target.value))} style={{ width: '40px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: fadeOut ? 'white' : 'gray', padding: '0.2rem', borderRadius: '4px', fontSize: '0.75rem', textAlign: 'center' }} title="Duration (frames)" />
-                            </div>
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                                <label style={{ display: 'flex', alignItems: 'center', gap: '5px', fontSize: '0.8rem', color: 'white', cursor: 'pointer' }}>
-                                    <input type="checkbox" checked={blurOut} onChange={(e) => setBlurOut(e.target.checked)} /> Blur
-                                </label>
-                                <input type="number" min="0" step="1" disabled={!blurOut} value={blurOutDuration} onChange={(e) => setBlurOutDuration(Number(e.target.value))} style={{ width: '40px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: blurOut ? 'white' : 'gray', padding: '0.2rem', borderRadius: '4px', fontSize: '0.75rem', textAlign: 'center' }} title="Duration (frames)" />
-                            </div>
-                            <span style={{ color: 'var(--text-secondary)', fontSize: '0.75rem', marginLeft: 'auto' }}>(in frames)</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Sticky Color Controls */}
-            <div className="glass" style={{ display: 'flex', flexDirection: 'column', gap: '0.8rem', padding: '1rem', borderRadius: '8px' }}>
-                <h3 style={{ color: 'var(--accent-gold)', textAlign: 'center', letterSpacing: '0.1em', margin: 0, fontSize: '0.9rem' }}>COLORS</h3>
-                <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '0.65rem', color: 'var(--accent-gold)', letterSpacing: '0.1em', fontWeight: 'bold' }}>TITLE COLOR</span>
-                        <input type="color" value={titleColor} onChange={(e) => setTitleColor(e.target.value)} style={{ background: 'transparent', border: 'none', width: '28px', height: '28px', cursor: 'pointer' }} />
-                    </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        <span style={{ fontSize: '0.65rem', color: 'var(--accent-gold)', letterSpacing: '0.1em', fontWeight: 'bold' }}>NAME COLOR</span>
-                        <input type="color" value={nameColor} onChange={(e) => setNameColor(e.target.value)} style={{ background: 'transparent', border: 'none', width: '28px', height: '28px', cursor: 'pointer' }} />
-                    </div>
-                </div>
+              <input type="text" placeholder="Search plates..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ width: '100%', padding: '0.8rem 1rem 0.8rem 3rem', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '0.9rem', outline: 'none' }} />
             </div>
             <div style={{ height: '2px', background: 'var(--accent-gold)', width: '100%', opacity: 0.6, borderRadius: '1px' }} />
           </div>
