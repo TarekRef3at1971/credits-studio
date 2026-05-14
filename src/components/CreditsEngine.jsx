@@ -38,8 +38,10 @@ const SortableCreditRow = ({
   onUpdateName,
   globalTitleBold,
   globalTitleItalic,
+  globalTitleSize,
   globalNameBold,
   globalNameItalic,
+  globalNameSize,
   plateRefs,
   onPreviewClick,
   onMoveUp,
@@ -170,10 +172,10 @@ const SortableCreditRow = ({
               style={{ 
                 background: 'rgba(255,255,255,0.05)', 
                 border: '1px solid var(--glass-border)', 
-                padding: '1rem', 
+                padding: '0.8rem', 
                 color: 'var(--accent-gold)',
                 fontFamily: 'var(--font-heading)',
-                fontSize: '1rem',
+                fontSize: globalTitleSize,
                 textTransform: 'uppercase',
                 fontWeight: globalTitleBold ? 'bold' : 'normal',
                 fontStyle: globalTitleItalic ? 'italic' : 'normal',
@@ -197,57 +199,37 @@ const SortableCreditRow = ({
                     padding: '0.8rem', 
                     color: 'white',
                     fontFamily: 'var(--font-body)',
-                    fontSize: credit.fontSize,
+                    fontSize: globalNameSize,
                     fontWeight: globalNameBold ? 'bold' : 'normal',
                     fontStyle: globalNameItalic ? 'italic' : 'normal',
                     outline: 'none'
                   }}
                 />
-                <button 
-                  onClick={() => onRemoveName(credit.id, idx)} 
-                  style={{ background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer' }}
-                  title="Remove Name"
-                >
-                  <Trash2 size={16} />
-                </button>
               </div>
             ))}
             
-            <button 
-              onClick={() => onAddName(credit.id)}
-              style={{ 
-                alignSelf: 'flex-start',
-                background: 'transparent', 
-                border: '1px dashed var(--accent-gold)', 
-                color: 'var(--accent-gold)', 
-                padding: '0.5rem 1rem', 
-                fontSize: '0.8rem',
-                cursor: 'pointer'
-              }}
-            >
-              + {credit.names.length === 0 ? 'ADD NAME' : 'ADD ANOTHER NAME'}
-            </button>
-          </div>
-
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem', alignItems: 'center' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '8px', whiteSpace: 'nowrap' }}>
-              <span style={{ fontSize: '0.7rem', color: 'var(--accent-gold)', letterSpacing: '0.15em', fontWeight: 'bold' }}>FONT SIZE:</span>
-              <select 
-                value={parseInt(credit.fontSize)} 
-                onChange={(e) => onUpdate(credit.id, 'fontSize', `${e.target.value}px`)}
-                style={{ background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', padding: '0.5rem' }}
+            {/* ADD NAME + DELETE PLATE on same row */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <button 
+                onClick={() => onAddName(credit.id)}
+                style={{ 
+                  background: 'transparent', 
+                  border: '1px dashed var(--accent-gold)', 
+                  color: 'var(--accent-gold)', 
+                  padding: '0.5rem 1rem', 
+                  fontSize: '0.8rem',
+                  cursor: 'pointer'
+                }}
               >
-                {fontSizes.map(size => (
-                  <option key={size} value={size}>{size}</option>
-                ))}
-              </select>
+                + {credit.names.length === 0 ? 'ADD NAME' : 'ADD ANOTHER NAME'}
+              </button>
+              <button 
+                onClick={() => onRemove(credit.id)}
+                style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}
+              >
+                DELETE PLATE
+              </button>
             </div>
-            <button 
-              onClick={() => onRemove(credit.id)}
-              style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer' }}
-            >
-              DELETE PLATE
-            </button>
           </div>
         </div>
 
@@ -345,8 +327,10 @@ const CreditsEngine = () => {
   }, [location]);
   const [globalTitleBold, setGlobalTitleBold] = useState(false);
   const [globalTitleItalic, setGlobalTitleItalic] = useState(false);
+  const [globalTitleSize, setGlobalTitleSize] = useState('18px');
   const [globalNameBold, setGlobalNameBold] = useState(false);
   const [globalNameItalic, setGlobalNameItalic] = useState(false);
+  const [globalNameSize, setGlobalNameSize] = useState('24px');
   const [isPlaying, setIsPlaying] = useState(false);
   const [showExportModal, setShowExportModal] = useState(false);
   const [showPricingModal, setShowPricingModal] = useState(false);
@@ -879,7 +863,7 @@ app.endUndoGroup();
           <h2 style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>End Credits <span className="cinematic-text">Writer</span></h2>
         </div>
 
-        <div style={{ display: 'grid', gridTemplateColumns: '210px 1.4fr 0.84fr', gap: '2rem', alignItems: 'start' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '240px 1.26fr 0.84fr', gap: '2rem', alignItems: 'start' }}>
           
           {/* Left Sidebar (Sticky) */}
           <div style={{ position: 'sticky', top: '2rem', display: 'flex', flexDirection: 'column', gap: '0.6rem', zIndex: 50, height: 'calc(100vh - 4rem)', overflowY: 'auto', overflowX: 'hidden', paddingRight: '0.5rem', minWidth: 0 }}>
@@ -906,13 +890,11 @@ app.endUndoGroup();
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: 0, overflow: 'hidden' }}>
             <div style={{ 
               position: 'sticky',
-              top: 0,
+              top: '2rem',
               zIndex: 100,
               marginBottom: '1.5rem',
               background: 'var(--bg-primary)',
               paddingBottom: '1rem',
-              paddingTop: '2rem',
-              marginTop: '-2rem'
             }}>
               {/* Search bar + controls side by side */}
               <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'stretch' }}>
@@ -939,8 +921,8 @@ app.endUndoGroup();
                   />
                 </div>
 
-                {/* TITLE STYLING */}
-                <div className="glass" style={{ padding: '0.4rem 0.6rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', minWidth: '80px' }}>
+                {/* TITLE STYLING + FONT SIZE */}
+                <div className="glass" style={{ padding: '0.4rem 0.6rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', minWidth: '90px' }}>
                   <span style={{ fontSize: '0.6rem', letterSpacing: '0.15em', color: 'var(--accent-gold)', fontWeight: 'bold', whiteSpace: 'nowrap' }}>TITLE</span>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
                     <input type="checkbox" checked={globalTitleBold} onChange={(e) => { setGlobalTitleBold(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
@@ -950,10 +932,13 @@ app.endUndoGroup();
                     <input type="checkbox" checked={globalTitleItalic} onChange={(e) => { setGlobalTitleItalic(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
                     <span style={{ fontSize: '0.7rem' }}>Italic</span>
                   </label>
+                  <select value={globalTitleSize} onChange={(e) => { setGlobalTitleSize(e.target.value); setIsDirty(true); }} style={{ background: 'transparent', border: '1px solid var(--glass-border)', color: 'var(--accent-gold)', padding: '2px', fontSize: '0.7rem', width: '100%' }}>
+                    {[12,14,16,18,20,24,28,32,36,42,48].map(s => <option key={s} value={`${s}px`}>{s}px</option>)}
+                  </select>
                 </div>
 
-                {/* NAME STYLING */}
-                <div className="glass" style={{ padding: '0.4rem 0.6rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', minWidth: '80px' }}>
+                {/* NAME STYLING + FONT SIZE */}
+                <div className="glass" style={{ padding: '0.4rem 0.6rem', display: 'flex', flexDirection: 'column', gap: '4px', alignItems: 'center', minWidth: '90px' }}>
                   <span style={{ fontSize: '0.6rem', letterSpacing: '0.15em', color: 'white', fontWeight: 'bold', whiteSpace: 'nowrap' }}>NAME</span>
                   <label style={{ display: 'flex', alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
                     <input type="checkbox" checked={globalNameBold} onChange={(e) => { setGlobalNameBold(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
@@ -963,6 +948,9 @@ app.endUndoGroup();
                     <input type="checkbox" checked={globalNameItalic} onChange={(e) => { setGlobalNameItalic(e.target.checked); setIsDirty(true); }} style={{ accentColor: 'var(--accent-gold)', width: '14px', height: '14px' }} />
                     <span style={{ fontSize: '0.7rem' }}>Italic</span>
                   </label>
+                  <select value={globalNameSize} onChange={(e) => { setGlobalNameSize(e.target.value); setIsDirty(true); }} style={{ background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', padding: '2px', fontSize: '0.7rem', width: '100%' }}>
+                    {[12,14,16,18,20,24,28,32,36,42,48].map(s => <option key={s} value={`${s}px`}>{s}px</option>)}
+                  </select>
                 </div>
 
                 {/* SPACING */}
@@ -1009,8 +997,10 @@ app.endUndoGroup();
                     onUpdateName={updateName}
                     globalTitleBold={globalTitleBold}
                     globalTitleItalic={globalTitleItalic}
+                    globalTitleSize={globalTitleSize}
                     globalNameBold={globalNameBold}
                     globalNameItalic={globalNameItalic}
+                    globalNameSize={globalNameSize}
                     plateRefs={plateRefs}
                     onPreviewClick={() => scrollToPreviewPlate(credit.id)}
                     onMoveUp={(idx) => movePlate(idx, 'up')}
@@ -1084,7 +1074,7 @@ app.endUndoGroup();
                   >
                     {c.role && (
                       <div style={{ 
-                        fontSize: '1.1rem', 
+                        fontSize: globalTitleSize, 
                         textTransform: 'uppercase', 
                         letterSpacing: '0.4em', 
                         color: 'var(--accent-gold)',
@@ -1100,7 +1090,7 @@ app.endUndoGroup();
                     <div style={{ display: 'flex', flexDirection: 'column', gap: `${gapBetweenNames * 0.3}px` }}>
                       {c.names.map((name, idx) => (
                         <div key={idx} style={{ 
-                          fontSize: c.fontSize, 
+                          fontSize: globalNameSize, 
                           fontFamily: 'var(--font-body)', 
                           letterSpacing: '0.15em',
                           fontWeight: globalNameBold ? 'bold' : 'normal',
