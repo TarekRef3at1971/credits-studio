@@ -198,12 +198,12 @@ const SortableCreditRow = ({
               <input value={name} onChange={(e) => onUpdateName(credit.id, idx, e.target.value)} placeholder="NAME" style={{ width: '100%', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--glass-border)', padding: '0.8rem', color: 'white', fontFamily: 'var(--font-body)', fontSize: '18px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
           ))}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'nowrap', overflow: 'hidden' }}>
             <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept="image/*" />
-            <button onClick={() => onAddName(credit.id)} style={{ background: 'transparent', border: '1px dashed var(--accent-gold)', color: 'var(--accent-gold)', padding: '0.5rem 1rem', fontSize: '0.8rem', cursor: 'pointer' }}>+ ADD NAME</button>
-            <button onClick={() => fileInputRef.current.click()} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem' }}><ImageIcon size={14} /> {credit.logo ? 'CHANGE LOGO' : 'ADD LOGO'}</button>
-            {credit.logo && <button onClick={handleRemoveLogo} style={{ background: 'transparent', border: '1px solid #ff4444', color: '#ff4444', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}>REMOVE LOGO</button>}
-            <button onClick={() => onRemove(credit.id)} style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>DELETE SLIDE</button>
+            <button onClick={() => onAddName(credit.id)} style={{ background: 'transparent', border: '1px dashed var(--accent-gold)', color: 'var(--accent-gold)', padding: '0.3rem 0.6rem', fontSize: '0.72rem', cursor: 'pointer', whiteSpace: 'nowrap', flexShrink: 0 }}>+ ADD NAME</button>
+            <button onClick={() => fileInputRef.current.click()} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', padding: '0.3rem 0.6rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', whiteSpace: 'nowrap', flexShrink: 0 }}><ImageIcon size={12} /> {credit.logo ? 'CHANGE LOGO' : 'ADD LOGO'}</button>
+            {credit.logo && <button onClick={handleRemoveLogo} style={{ background: 'transparent', border: '1px solid #ff4444', color: '#ff4444', padding: '0.3rem 0.6rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.72rem', whiteSpace: 'nowrap', flexShrink: 0 }}>✕ LOGO</button>}
+            <button onClick={() => onRemove(credit.id)} style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '0.72rem', whiteSpace: 'nowrap', flexShrink: 0 }}>DELETE SLIDE</button>
           </div>
         </div>
 
@@ -653,7 +653,7 @@ app.endUndoGroup();
             <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', alignItems: 'flex-start', justifyContent: 'center' }}>
                 {/* Left-side Order Panel - vertical label spanning all 4 buttons */}
                 <div style={{ display: 'flex', flexDirection: 'row', gap: '6px', alignItems: 'stretch' }}>
-                    <p style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', textAlign: 'center', color: 'var(--accent-gold)', fontSize: '0.6rem', letterSpacing: '0.15em', margin: 0, fontWeight: 'bold' }}>APPEARANCE ORDER</p>
+                    <p style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', textAlign: 'center', color: 'var(--accent-gold)', fontSize: '0.75rem', letterSpacing: '0.12em', margin: 0, fontWeight: 'bold' }}>APPEARANCE ORDER</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         {renderButton('FIX', <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>FIX</span>)}
                         {renderButton('CENTER', <CenterSVG />)}
