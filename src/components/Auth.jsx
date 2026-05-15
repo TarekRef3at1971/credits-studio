@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Mail, Lock, User, ArrowRight, Globe } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Globe, Eye, EyeOff } from 'lucide-react';
 
 const Auth = () => {
     const [isLogin, setIsLogin] = useState(true);
     const [formData, setFormData] = useState({
-        username: 'Admin',
-        email: 'admin@creditsstudio.com',
-        password: 'admin123',
-        confirmPassword: 'admin123'
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
     });
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
@@ -207,7 +209,7 @@ const Auth = () => {
                     <div style={{ position: 'relative' }}>
                         <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
                         <input 
-                            type="password" 
+                            type={showPassword ? 'text' : 'password'}
                             name="password"
                             placeholder="Password"
                             required
@@ -215,14 +217,23 @@ const Auth = () => {
                             onChange={handleChange}
                             style={{
                                 width: '100%',
-                                padding: '1rem 1rem 1rem 3rem',
+                                padding: '1rem 3rem 1rem 3rem',
                                 background: 'rgba(255,255,255,0.03)',
                                 border: '1px solid rgba(255,255,255,0.1)',
                                 borderRadius: '12px',
                                 color: 'white',
-                                outline: 'none'
+                                outline: 'none',
+                                boxSizing: 'border-box'
                             }}
                         />
+                        <button
+                            type="button"
+                            onClick={() => setShowPassword(v => !v)}
+                            style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+                            tabIndex={-1}
+                        >
+                            {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                        </button>
                     </div>
 
                     <AnimatePresence mode="wait">
@@ -236,7 +247,7 @@ const Auth = () => {
                                 <div style={{ position: 'relative' }}>
                                     <Lock size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'rgba(255,255,255,0.3)' }} />
                                     <input 
-                                        type="password" 
+                                        type={showConfirmPassword ? 'text' : 'password'}
                                         name="confirmPassword"
                                         placeholder="Confirm Password"
                                         required
@@ -244,14 +255,23 @@ const Auth = () => {
                                         onChange={handleChange}
                                         style={{
                                             width: '100%',
-                                            padding: '1rem 1rem 1rem 3rem',
+                                            padding: '1rem 3rem 1rem 3rem',
                                             background: 'rgba(255,255,255,0.03)',
                                             border: '1px solid rgba(255,255,255,0.1)',
                                             borderRadius: '12px',
                                             color: 'white',
-                                            outline: 'none'
+                                            outline: 'none',
+                                            boxSizing: 'border-box'
                                         }}
                                     />
+                                    <button
+                                        type="button"
+                                        onClick={() => setShowConfirmPassword(v => !v)}
+                                        style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', background: 'transparent', border: 'none', color: 'rgba(255,255,255,0.4)', cursor: 'pointer', padding: 0, display: 'flex', alignItems: 'center' }}
+                                        tabIndex={-1}
+                                    >
+                                        {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                                    </button>
                                 </div>
                             </motion.div>
                         )}
