@@ -198,9 +198,12 @@ const SortableCreditRow = ({
               <input value={name} onChange={(e) => onUpdateName(credit.id, idx, e.target.value)} placeholder="NAME" style={{ width: '100%', background: 'rgba(255,255,255,0.02)', border: '1px solid var(--glass-border)', padding: '0.8rem', color: 'white', fontFamily: 'var(--font-body)', fontSize: '18px', outline: 'none', boxSizing: 'border-box' }} />
             </div>
           ))}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.8rem', flexWrap: 'wrap' }}>
+            <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept="image/*" />
             <button onClick={() => onAddName(credit.id)} style={{ background: 'transparent', border: '1px dashed var(--accent-gold)', color: 'var(--accent-gold)', padding: '0.5rem 1rem', fontSize: '0.8rem', cursor: 'pointer' }}>+ ADD NAME</button>
-            <button onClick={() => onRemove(credit.id)} style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>DELETE PLATE</button>
+            <button onClick={() => fileInputRef.current.click()} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px', fontSize: '0.75rem' }}><ImageIcon size={14} /> {credit.logo ? 'CHANGE LOGO' : 'ADD LOGO'}</button>
+            {credit.logo && <button onClick={handleRemoveLogo} style={{ background: 'transparent', border: '1px solid #ff4444', color: '#ff4444', padding: '0.4rem 0.8rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.75rem' }}>REMOVE LOGO</button>}
+            <button onClick={() => onRemove(credit.id)} style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}>DELETE SLIDE</button>
           </div>
         </div>
 
@@ -213,11 +216,7 @@ const SortableCreditRow = ({
           <button onClick={() => onUpdate(credit.id, 'overridePosition', 'CENTER')} style={{ padding: '4px 8px', background: credit.overridePosition === 'CENTER' ? 'var(--accent-gold)' : 'transparent', color: credit.overridePosition === 'CENTER' ? 'black' : 'gray', border: '1px solid gray', borderRadius: '4px', fontSize: '0.7rem', cursor: 'pointer' }}>C</button>
         </div>
 
-        <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem', alignItems: 'center' }}>
-          <input type="file" ref={fileInputRef} onChange={handleFileChange} style={{ display: 'none' }} accept="image/*" />
-          <button onClick={() => fileInputRef.current.click()} style={{ background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: 'white', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.8rem' }}><ImageIcon size={16} /> {credit.logo ? 'CHANGE LOGO' : 'ADD LOGO'}</button>
-          {credit.logo && <button onClick={handleRemoveLogo} style={{ background: 'transparent', border: '1px solid #ff4444', color: '#ff4444', padding: '0.5rem 1rem', borderRadius: '4px', cursor: 'pointer', fontSize: '0.8rem' }}>REMOVE LOGO</button>}
-        </div>
+
       </div>
     </div>
   );
@@ -640,7 +639,7 @@ app.endUndoGroup();
         {/* Left Sidebar */}
         <div className="custom-scrollbar" style={{ height: '100%', overflowY: 'auto', overflowX: 'hidden', paddingRight: '10px', display: 'flex', flexDirection: 'column', gap: '0.6rem', minWidth: 0 }}>
           <WordImporter credits={credits} setCredits={setCredits} moduleType="BEGIN" />
-          <button onClick={addRow} className="btn-primary" style={{ padding: '0.8rem', background: 'var(--accent-gold)', color: 'black', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><Plus size={18} style={{ marginRight: '8px' }} /> ADD NEW PLATE</button>
+          <button onClick={addRow} className="btn-primary" style={{ padding: '0.8rem', background: 'var(--accent-gold)', color: 'black', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><Plus size={18} style={{ marginRight: '8px' }} /> ADD NEW SLIDE</button>
           <button onClick={() => setShowNewProjectModal(true)} className="btn-primary" style={{ padding: '0.8rem', background: 'transparent', border: '1px solid var(--accent-silver)', color: 'var(--accent-silver)', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><FilePlus size={18} style={{ marginRight: '8px' }} /> NEW PROJECT</button>
           <button onClick={handleExportClick} className="btn-primary" style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px', background: '#31A8FF', border: 'none', color: 'white', padding: '0.8rem' }}><Download size={18} /> EXPORT TO ADOBE</button>
           <ProjectPanel credits={credits} setCredits={setCredits} moduleType="BEGIN" onProjectSaved={() => setIsDirty(false)} />
@@ -652,9 +651,9 @@ app.endUndoGroup();
             
           <div className="glass" style={{ padding: '1.5rem', borderRadius: '12px', marginBottom: '2rem' }}>
             <div style={{ display: 'flex', flexDirection: 'row', gap: '1rem', alignItems: 'flex-start', justifyContent: 'center' }}>
-                {/* Left-side Order Panel */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', alignItems: 'center' }}>
-                    <p style={{ textAlign: 'center', color: 'var(--accent-gold)', fontSize: '0.6rem', letterSpacing: '0.15em', margin: 0, fontWeight: 'bold', whiteSpace: 'nowrap' }}>APPEARANCE ORDER</p>
+                {/* Left-side Order Panel - vertical label spanning all 4 buttons */}
+                <div style={{ display: 'flex', flexDirection: 'row', gap: '6px', alignItems: 'stretch' }}>
+                    <p style={{ writingMode: 'vertical-rl', transform: 'rotate(180deg)', textAlign: 'center', color: 'var(--accent-gold)', fontSize: '0.6rem', letterSpacing: '0.15em', margin: 0, fontWeight: 'bold' }}>APPEARANCE ORDER</p>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
                         {renderButton('FIX', <span style={{ fontSize: '0.8rem', fontWeight: 'bold' }}>FIX</span>)}
                         {renderButton('CENTER', <CenterSVG />)}
@@ -710,7 +709,7 @@ app.endUndoGroup();
                                     >
                                         {(currentQuad !== 'CENTER' || isCurrent) && (
                                             <>
-                                                <span style={{ position: 'absolute', top: '5px', left: '10px', color: isCurrent ? 'var(--accent-gold)' : 'rgba(255,255,255,0.1)', fontSize: '0.8rem', fontWeight: 'bold' }}>{q}</span>
+                                                <span style={{ position: 'absolute', top: '5px', left: '10px', color: isCurrent ? 'var(--accent-gold)' : 'rgba(255,255,255,0.35)', fontSize: '0.8rem', fontWeight: 'bold' }}>{q}</span>
                                                 {isStart && <span style={{ position: 'absolute', top: '5px', right: '10px', color: 'var(--accent-gold)', fontSize: '0.6rem', opacity: isCurrent ? 1 : 0.4 }}>START</span>}
                                                 
                                                 {/* Live Text Preview for the Current Quadrant */}
@@ -810,6 +809,8 @@ app.endUndoGroup();
                     <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'white', cursor: 'pointer' }}><input type="checkbox" checked={blurIn} onChange={(e) => setBlurIn(e.target.checked)} /> Blur</label>
                     <input type="number" min="0" step="1" disabled={!blurIn} value={blurInDuration} onChange={(e) => setBlurInDuration(Number(e.target.value))} style={{ width: '36px', background: 'rgba(255,255,255,0.05)', border: '1px solid var(--glass-border)', color: blurIn ? 'white' : 'gray', padding: '0.15rem', borderRadius: '4px', fontSize: '0.7rem', textAlign: 'center' }} />
                   </div>
+                  {/* Yellow separator */}
+                  <div style={{ width: '2px', background: 'var(--accent-gold)', borderRadius: '1px', opacity: 0.7, alignSelf: 'stretch' }} />
                   <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', background: 'rgba(255,255,255,0.02)', padding: '0.4rem 0.6rem', borderRadius: '6px', flex: 1 }}>
                     <span style={{ color: 'var(--accent-gold)', fontSize: '0.75rem', fontWeight: 'bold', width: '24px' }}>OUT</span>
                     <label style={{ display: 'flex', alignItems: 'center', gap: '4px', fontSize: '0.72rem', color: 'white', cursor: 'pointer' }}><input type="checkbox" checked={fadeOut} onChange={(e) => setFadeOut(e.target.checked)} /> Fade</label>
@@ -843,7 +844,7 @@ app.endUndoGroup();
           <div style={{ position: 'sticky', top: 0, zIndex: 100, background: 'var(--bg-primary)', paddingBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
             <div style={{ position: 'relative' }}>
               <Search size={18} style={{ position: 'absolute', left: '1rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
-              <input type="text" placeholder="Search plates..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ width: '100%', padding: '0.8rem 1rem 0.8rem 3rem', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '0.9rem', outline: 'none' }} />
+              <input type="text" placeholder="Search slides..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} style={{ width: '100%', padding: '0.8rem 1rem 0.8rem 3rem', borderRadius: '8px', border: '1px solid var(--glass-border)', background: 'rgba(255,255,255,0.05)', color: 'white', fontSize: '0.9rem', outline: 'none' }} />
             </div>
             <div style={{ height: '2px', background: 'var(--accent-gold)', width: '100%', opacity: 0.6, borderRadius: '1px' }} />
           </div>

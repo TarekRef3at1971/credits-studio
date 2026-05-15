@@ -110,6 +110,12 @@ const Auth = () => {
                 }}
             >
                 <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                    <button
+                        onClick={() => navigate('/dashboard')}
+                        style={{ background: 'transparent', border: 'none', color: 'var(--text-secondary)', cursor: 'pointer', fontSize: '0.8rem', letterSpacing: '0.1em', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '6px', margin: '0 auto 1.5rem auto' }}
+                    >
+                        ← BACK TO DASHBOARD
+                    </button>
                     <h2 style={{ 
                         fontSize: '2rem', 
                         letterSpacing: '0.2em', 

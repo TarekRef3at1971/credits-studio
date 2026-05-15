@@ -227,7 +227,7 @@ const SortableCreditRow = ({
                 onClick={() => onRemove(credit.id)}
                 style={{ marginLeft: 'auto', background: 'transparent', border: 'none', color: '#ff4444', cursor: 'pointer', fontSize: '0.8rem', whiteSpace: 'nowrap' }}
               >
-                DELETE PLATE
+                DELETE SLIDE
               </button>
             </div>
           </div>
@@ -870,7 +870,7 @@ app.endUndoGroup();
             <WordImporter credits={credits} setCredits={setCredits} moduleType="END" />
             
             <button onClick={addRow} className="btn-primary" style={{ padding: '0.8rem', background: 'var(--accent-gold)', color: 'black', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              <Plus size={18} style={{ marginRight: '8px' }} /> ADD NEW PLATE
+              <Plus size={18} style={{ marginRight: '8px' }} /> ADD NEW SLIDE
             </button>
 
             <button onClick={() => setShowNewProjectModal(true)} className="btn-primary" style={{ padding: '0.8rem', background: 'transparent', border: '1px solid var(--accent-silver)', color: 'var(--accent-silver)', width: '100%', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -903,7 +903,7 @@ app.endUndoGroup();
                   <Search size={16} style={{ position: 'absolute', left: '0.8rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-secondary)' }} />
                   <input 
                     type="text" 
-                    placeholder="Search plates..." 
+                    placeholder="Search slides..." 
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     style={{ 
@@ -958,7 +958,7 @@ app.endUndoGroup();
                   <span style={{ fontSize: '0.6rem', letterSpacing: '0.12em', color: '#31A8FF', fontWeight: 'bold', whiteSpace: 'nowrap' }}>SPACING (px)</span>
                   <div style={{ display: 'flex', gap: '0.4rem' }}>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <span style={{ fontSize: '0.55rem', color: 'var(--text-secondary)' }}>PLATE</span>
+                      <span style={{ fontSize: '0.55rem', color: 'var(--text-secondary)' }}>SLIDE</span>
                       <input type="number" value={gapBetweenPlates} onChange={e => setGapBetweenPlates(Number(e.target.value) || 0)} style={{ width: '52px', background: 'transparent', border: '1px solid var(--glass-border)', color: 'white', textAlign: 'center', padding: '0.15rem', fontSize: '0.75rem' }} />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -1114,7 +1114,7 @@ app.endUndoGroup();
             </div>
             {!isPlaying && (
               <p style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.8rem', color: 'var(--text-secondary)' }}>
-                💡 Click a plate in preview to jump to it in the editor
+                💡 Click a slide in preview to jump to it in the editor
               </p>
             )}
           </div>
