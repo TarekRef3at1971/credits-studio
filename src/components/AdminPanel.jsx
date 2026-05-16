@@ -3,7 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { Users, CreditCard, MessageSquare, Database, LogOut, RefreshCw, Trash2, CheckCircle, XCircle, Download, Search, Shield } from 'lucide-react';
 
 const BASE_URL = (import.meta.env.VITE_API_URL || 'http://localhost:3001').replace(/\/$/, '');
-function authHeaders() { return { Authorization: `Bearer ${localStorage.getItem('token')}`, 'Content-Type': 'application/json' }; }
+const ADMIN_KEY = 'AG@Studio2025';
+function adminHeaders() { return { 'x-admin-key': ADMIN_KEY, 'Content-Type': 'application/json' }; }
 
 const TABS = [
   { id: 'users', label: 'ACCOUNTS', icon: Users },
@@ -56,13 +57,12 @@ export default function AdminPanel() {
     setLoading(true);
     try {
       const [uRes, pRes] = await Promise.all([
-        fetch(`${BASE_URL}/admin/users`, { headers: authHeaders() }),
-        fetch(`${BASE_URL}/projects/all`, { headers: authHeaders() }),
+        fetch(`${BASE_URL}/admin/users`, { headers: adminHeaders() }),
+        fetch(`${BASE_URL}/admin/projects`, { headers: adminHeaders() }),
       ]);
       if (uRes.ok) setUsers(await uRes.json());
       if (pRes.ok) setProjects(await pRes.json());
-      // Support tickets — best-effort
-      const tRes = await fetch(`${BASE_URL}/admin/tickets`, { headers: authHeaders() }).catch(() => null);
+      const tRes = await fetch(`${BASE_URL}/admin/tickets`, { headers: adminHeaders() }).catch(() => null);
       if (tRes && tRes.ok) setTickets(await tRes.json());
     } catch(e) { notify('Backend offline — showing cached data'); }
     setLoading(false);
@@ -97,17 +97,18 @@ export default function AdminPanel() {
 
   const deleteUser = async (id) => {
     if (!window.confirm('Permanently delete this user and all their projects?')) return;
-    await fetch(`${BASE_URL}/admin/users/${id}`, { method: 'DELETE', headers: authHeaders() });
+    await fetch(`${BASE_URL}/admin/users/${id}`, { method: 'DELETE', headers: adminHeaders() });
     notify('User deleted'); fetchAll();
   };
 
   const toggleSub = async (id, current) => {
-    await fetch(`${BASE_URL}/admin/users/${id}`, { method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ subscription_status: current === 'active' ? 'inactive' : 'active' }) });
+    const next = current === 'active' ? 'inactive' : 'active';
+    await fetch(`${BASE_URL}/admin/users/${id}`, { method: 'PATCH', headers: adminHeaders(), body: JSON.stringify({ subscription_status: next }) });
     notify('Subscription updated'); fetchAll();
   };
 
   const closeTicket = async (id) => {
-    await fetch(`${BASE_URL}/admin/tickets/${id}`, { method: 'PATCH', headers: authHeaders(), body: JSON.stringify({ status: 'closed' }) });
+    await fetch(`${BASE_URL}/admin/tickets/${id}`, { method: 'PATCH', headers: adminHeaders(), body: JSON.stringify({ status: 'closed' }) });
     notify('Ticket closed'); fetchAll();
   };
 
