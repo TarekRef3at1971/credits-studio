@@ -9,6 +9,7 @@ import BeginningCredits from './components/BeginningCredits';
 import Contact from './components/Contact';
 import Auth from './components/Auth';
 import Dashboard from './components/Dashboard';
+import AdminPanel from './components/AdminPanel';
 
 function Home() {
   return (
@@ -136,6 +137,7 @@ function App() {
           } />
           <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/admin" element={<AdminPanel />} />
         </Routes>
       </main>
     </Router>
